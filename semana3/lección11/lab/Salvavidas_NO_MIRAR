@@ -1,0 +1,20 @@
+# 1. Imagen base (utilizamos la mas adecuada para rodar aplicaciones node)
+FROM node:slim
+
+# 2. Dependencias:
+# Instalar las librerias necesarias
+# Si utilizaramos una imagen base genérica (no la especializada para appps node)
+# probablemente tendriamos que instalar node ...
+# Por ejemplo
+# FROM ubuntu:latest
+# RUN apt-get update && apt-get install -y nodejs npm
+
+# Directorio de trabajo de la aplicación y copia del fichero de la aplicación
+WORKDIR /usr/src/app
+COPY app.js .
+
+# 3. Configuración
+EXPOSE 3000
+
+# 4. Lanzar la aplicación
+ENTRYPOINT ["node", "app.js"]

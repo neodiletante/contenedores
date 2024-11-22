@@ -1,0 +1,25 @@
+version: '3'  # Versión de la sintaxis de Docker Compose. Las versiones comunes son '3', '3.7', etc.
+
+services:  # Definición de los servicios (contenedores) que componen la aplicación
+  nombre_del_servicio:  # Nombre del servicio (puede ser cualquier nombre)
+    image: nombre_de_la_imagen  # Opción 1: Usa una imagen existente de Docker Hub o una imagen local
+    build:  # Opción 2: Alternativamente, puedes construir una imagen desde un Dockerfile
+      context: directorio_del_servicio  # Directorio de contexto para la construcción (generalmente la raíz del proyecto)
+      dockerfile: Dockerfile  # Nombre del Dockerfile (por defecto es 'Dockerfile')
+    ports:  # Mapeo de puertos entre el contenedor y el host
+      - "puerto_host:puerto_contenedor"
+    environment:  # Variables de entorno para el servicio
+      - VAR1=valor1
+      - VAR2=valor2
+    volumes:  # Mapeo de volúmenes entre el host y el contenedor
+      - "volumen_host:volumen_contenedor"
+    networks:  # Redes a las que el servicio se conecta
+      - nombre_de_la_red
+
+networks:  # Definición de redes personalizadas (opcional)
+  nombre_de_la_red:  # Nombre de la red
+    driver: bridge  # Tipo de red (por ejemplo, 'bridge', 'overlay', etc.)
+
+volumes:  # Definición de volúmenes personalizados (opcional)
+  nombre_del_volumen:  # Nombre del volumen 
+    driver: local  # Tipo de volumen (por ejemplo, 'local', 'nfs', etc.)

@@ -1,0 +1,32 @@
+# Etapa 1: Construcción y pruebas
+FROM golang:1.19 AS builder
+
+# Establece el directorio de trabajo
+WORKDIR /app
+
+# Inicializa el módulo Go (si no lo has hecho previamente)
+RUN go mod init hello
+
+# Copia el archivo go.mod si ya lo tienes
+COPY go.mod ./
+
+# Descarga las dependencias si go.mod existe, si no lo genera
+RUN [ -f go.mod ] && go mod tidy || echo "No go.mod file"
+
+# Copia el código fuente
+COPY . .
+
+# Ejecuta las pruebas unitarias
+RUN go test ./...
+
+# Compila la aplicación
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/bin/hello .
+
+# Etapa 2: Imagen mínima para ejecutar la aplicación
+FROM scratch
+
+# Copia el binario desde la imagen anterior
+COPY --from=builder /app/bin/hello /hello
+
+# Establece el comando por defecto
+CMD ["/hello"]

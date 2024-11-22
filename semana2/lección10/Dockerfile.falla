@@ -1,0 +1,5 @@
+# Usa una imagen base mínima de Alpine Linux
+FROM alpine:latest
+
+# Comando para esperar 2 segundos y luego fallar
+CMD ["sh", "-c", "sleep 2 && exit 1"]

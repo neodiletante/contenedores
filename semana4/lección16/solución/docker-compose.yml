@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  upload_service:
+    build:
+      context: ./upload_service
+    image: upload_service
+    container_name: upload_service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/uploads
+
+  list_service:
+    build:
+      context: ./list_service
+    image: list_service
+    container_name: list_service
+    ports:
+      - "6000:6000"
+    volumes:
+      - ./uploads:/uploads
+    depends_on:
+      - upload_service
+
+  email_service:
+    build:
+      context: ./email_service
+    image: email_service
+    container_name: email_service
+    environment:
+      - SMTP_SERVER=smtp.example.com
+      - TO_EMAIL=admin@example.com
+    volumes:
+      - ./uploads:/uploads
+    depends_on:
+      - upload_service
